@@ -11,12 +11,12 @@ public class Transfer {
      *
      * @param text 크롤링 해 온 문자열 데이터
      * @return 문자배열 형태로 구성된 리스트
-     **/
+     */
     public List<char[]> transfer(String text) {
         words = text.trim().split(" ");     // 띄어쓰기를 기준으로 단어 구분
 
         for (String word : words) {
-            if(word.equals("")) {                   // 공백은 제거
+            if(word.equals("")) {                  // 공백은 제거
                 continue;
             }
             returnWords.add(word.trim().toCharArray());
@@ -29,7 +29,7 @@ public class Transfer {
      * 문자열에서 '(,)'를 포함하여 그 사이에 있는 내용을 삭제
      * @param text 문자열
      * @return () 삭제 된 문자열
-     **/
+     */
     public String getDeletedSpaceStr(String text) {
         int start, end, length = 0;
 
@@ -42,5 +42,24 @@ public class Transfer {
         }
 
         return text;
+    }
+
+    /**
+     * 강조할 글자의 index를 반환
+     * 2글자 이하면 앞글자
+     * 5글자 이상이면 3번째 글자
+     * 그 외는 가운데, ex) 바'나'나, 워터'멜'론
+     * @param word 문자배열로 이루어진 단어
+     * @return 강조할 음절의 index
+     */
+    public int getIndexOfStress(char[] word) {
+        int length = word.length;
+
+        if(length <= 2) {
+            return 0;
+        } else if(length > 4) {
+            return 2;
+        }
+        return length / 2;
     }
 }

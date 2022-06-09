@@ -29,7 +29,9 @@ public class JsoupTest {
 
 
         for(char[] word : tf.transfer(text)) {
-            System.out.println(word);
+            System.out.print(word);
+            System.out.print(" ");
+            System.out.println(word[tf.getIndexOfStress(word)]);
         }
     }
 }
