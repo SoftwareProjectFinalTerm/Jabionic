@@ -27,6 +27,7 @@ public class JsoupTest {
 
         text = tf.getDeletedSpaceStr(text);
 
+
         for(char[] word : tf.transfer(text)) {
             System.out.print(word);
             System.out.print(" ");
