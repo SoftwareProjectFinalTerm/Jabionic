@@ -52,6 +52,6 @@ public class Gui extends JFrame{
     public static void main(String[] args) {
 //		new Gui();
 		JsoupTest jsoupTest = new JsoupTest();
-		jsoupTest.crawling("https://n.news.naver.com/mnews/article/293/0000039337?sid=105");
+		jsoupTest.crawling("https://news.v.daum.net/v/20220612182429601");
     }
 }
