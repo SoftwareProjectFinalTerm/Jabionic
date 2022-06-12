@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transfer {
-    private String[] words;
-    private List<char[]> returnWords = new ArrayList<>();
 
     /**
      * 크롤링 한 문자열 전체를 인자로 넘기면, 각 단어를 문자 배열 형태로 바꾸어 리스트에 저장
@@ -12,17 +10,21 @@ public class Transfer {
      * @param text 크롤링 해 온 문자열 데이터
      * @return 문자배열 형태로 구성된 리스트
      */
-    public List<char[]> transfer(String text) {
-        words = text.trim().split(" ");     // 띄어쓰기를 기준으로 단어 구분
+    public List<ResponseCrawling> transfer(String text) {
+        String[] words;
+        List<ResponseCrawling> responseCrawlings = new ArrayList<>();
+
+        words = getDeletedSpaceStr(text).trim().split(" ");     // 띄어쓰기를 기준으로 단어 구분
 
         for (String word : words) {
             if(word.equals("")) {                  // 공백은 제거
                 continue;
             }
-            returnWords.add(word.trim().toCharArray());
+            char[] charArray = word.trim().toCharArray();
+            responseCrawlings.add(new ResponseCrawling(charArray, getIndexOfStress(charArray)));
         }
 
-        return returnWords;
+        return responseCrawlings;
     }
 
     /**
@@ -30,7 +32,7 @@ public class Transfer {
      * @param text 문자열
      * @return () 삭제 된 문자열
      */
-    public String getDeletedSpaceStr(String text) {
+    private String getDeletedSpaceStr(String text) {
         int start, end, length = 0;
 
         while(text.contains("(")) {
@@ -52,7 +54,7 @@ public class Transfer {
      * @param word 문자배열로 이루어진 단어
      * @return 강조할 음절의 index
      */
-    public int getIndexOfStress(char[] word) {
+    private int getIndexOfStress(char[] word) {
         int length = word.length;
 
         if(length <= 2) {

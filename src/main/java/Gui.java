@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Gui extends JFrame{
+
 	JTextField link = new JTextField(30);
 	JTextArea Text = new JTextArea(25,40);
 	JScrollPane scrollText = new JScrollPane(Text);
@@ -49,6 +50,8 @@ public class Gui extends JFrame{
 	}
 	
     public static void main(String[] args) {
-		new Gui();
+//		new Gui();
+		JsoupTest jsoupTest = new JsoupTest();
+		jsoupTest.crawling("https://n.news.naver.com/mnews/article/293/0000039337?sid=105");
     }
 }
