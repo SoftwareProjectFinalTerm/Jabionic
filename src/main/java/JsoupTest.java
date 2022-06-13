@@ -36,11 +36,7 @@ public class JsoupTest {
         Transfer tf = new Transfer();
         String text = "";
 
-        try {
-            text = searchRawText(url); //본문 내용 가져옴
-        } catch (IOException e) {
-            throw new IOException();
-        }
+        text = searchRawText(url); //본문 내용 가져옴
 
         // 결과 확인용 출력 구문
         for(ResponseWord responseWord : tf.transfer(text).getResponseWords()) {
