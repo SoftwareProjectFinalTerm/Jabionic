@@ -10,9 +10,10 @@ public class Transfer {
      * @param text 크롤링 해 온 문자열 데이터
      * @return 문자배열 형태로 구성된 리스트
      */
-    public List<ResponseCrawling> transfer(String text) {
+    public ResponseCrawling transfer(String text) {
         String[] words;
-        List<ResponseCrawling> responseCrawlings = new ArrayList<>();
+        List<ResponseWord> responseWords = new ArrayList<>();
+        ResponseCrawling responseCrawling = new ResponseCrawling();
 
         words = getDeletedSpaceStr(text).trim().split(" ");     // 띄어쓰기를 기준으로 단어 구분
 
@@ -21,10 +22,13 @@ public class Transfer {
                 continue;
             }
             char[] charArray = word.trim().toCharArray();
-            responseCrawlings.add(new ResponseCrawling(charArray, getIndexOfStress(charArray)));
+            responseWords.add(new ResponseWord(charArray, getIndexOfStress(charArray)));
         }
 
-        return responseCrawlings;
+        responseCrawling.setResponseWords(responseWords);
+        responseCrawling.setRawText(text);
+
+        return responseCrawling;
     }
 
     /**

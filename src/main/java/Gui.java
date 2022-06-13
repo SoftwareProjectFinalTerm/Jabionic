@@ -69,7 +69,7 @@ public class Gui extends JFrame{
 					//JTextArea에서 기사 내용 볼 수 있도록 수정
 					Text.setLineWrap(true);
 				    Text.setWrapStyleWord(true);
-					Text.setText(jsoupTest.classifySite(url));
+//					Text.setText(jsoupTest.classifySite(url));
 					//jsoupTest.crawling(url);					
 				}
 			});
