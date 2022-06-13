@@ -1,17 +1,22 @@
+import java.util.List;
+
 public class ResponseCrawling {
-    private char[] resultWord;
-    private int stressIndex;
+    String rawText;
+    List<ResponseWord> responseWords;
 
-    public ResponseCrawling(char[] resultWord, int stressIndex) {
-        this.resultWord = resultWord;
-        this.stressIndex = stressIndex;
+    public String getRawText() {
+        return rawText;
     }
 
-    public char[] getResultWord() {
-        return resultWord;
+    public void setRawText(String rawText) {
+        this.rawText = rawText;
     }
 
-    public int getStressIndex() {
-        return stressIndex;
+    public List<ResponseWord> getResponseWords() {
+        return responseWords;
+    }
+
+    public void setResponseWords(List<ResponseWord> responseWords) {
+        this.responseWords = responseWords;
     }
 }

@@ -69,7 +69,7 @@ public class Gui extends JFrame{
 					//JTextArea에서 기사 내용 볼 수 있도록 수정
 					Text.setLineWrap(true);
 				    Text.setWrapStyleWord(true);
-					Text.setText(jsoupTest.classifySite(url));
+//					Text.setText(jsoupTest.classifySite(url));
 					//jsoupTest.crawling(url);					
 				}
 			});
@@ -78,5 +78,11 @@ public class Gui extends JFrame{
 	
     public static void main(String[] args) {
 		new Gui();
+//		JsoupTest jsoupTest = new JsoupTest();
+//		try {
+//			jsoupTest.crawling("https://n.news.naver.com/mnews/article/293/0000039337?sid=105");
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
     }
 }
