@@ -2,10 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.text.AttributedString;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Gui extends JFrame{
+public class Gui extends JFrame {
 
 	JsoupTest jsoupTest = new JsoupTest();
 	JTextField link = new JTextField(30);
@@ -14,6 +17,8 @@ public class Gui extends JFrame{
 	JScrollPane scrollText = new JScrollPane(Text);
 	JButton readButton = new JButton("Read");
 	String url = "";
+	
+	List<ResponseCrawling> rc = new ArrayList<>();
 
 	public Gui() {
 		setTitle("Bionic reader");
@@ -38,7 +43,21 @@ public class Gui extends JFrame{
 	}
 	
 	//바이오닉리딩 결과 띄워주는 패널
-	class NorthPanel extends JPanel { 
+	class NorthPanel extends JPanel {
+		
+		//버튼 눌리면 패널 업데이트
+		public NorthPanel() {
+			
+			readButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					revalidate();
+					repaint();
+				}
+			});
+		}
+		
 		public void paintComponent(Graphics g) {
 			
 			//고정위치를 나타내는 부분 삭제(상하 줄만 제외 제거함) 
@@ -46,17 +65,48 @@ public class Gui extends JFrame{
 			g.drawLine(10,60,490,60); 
 			//g.drawLine(200,60,200,70); 
 			//g.drawLine(200,160,200,170); 
-			g.drawLine(10,170,490,170); 
-			g.setFont(new Font("맑은 고딕",Font.PLAIN,30));
-
-			//String str = "example string";
+			g.drawLine(10,170,490,170);
+			
+			//리스트가 비었을 경우(Bionic reading 된 결과가 없을 경우)
+			if(rc.isEmpty()) return;
+			
+			Font MalgunGothic = new Font("맑은 고딕",Font.PLAIN,30);
+			
+			//g.setFont();			
 			//g.drawString(str,100,125);
-		}
+			
+			//지정 인덱스의 character만 강조하여 출력
+			for(ResponseCrawling responseCrawling : rc) {
+				
+				try {
+					Thread.sleep(100);
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					
+					String str = new String(responseCrawling.getResultWord());
+					int index = responseCrawling.getStressIndex();
+					
+					AttributedString as = new AttributedString(str);
+					as.addAttribute(TextAttribute.FONT, MalgunGothic);
+					as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index+1);
+					
+					g2.drawString(as.getIterator(), 100, 125);
+					//this.setVisible(true);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//revalidate();
+			}
+		}			
 	}
 
 	//링크 받아오기, 기사 전체 출력 패널
 	class SouthPanel extends JPanel {
+		
 		public SouthPanel() {
+			
 			add(scrollText);
 			add(new JLabel("Link"));
 			add(link);
@@ -64,17 +114,20 @@ public class Gui extends JFrame{
 			
 			//링크 사용자에게 입력받도록 함
 			readButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					url = link.getText();
 					//JTextArea에서 기사 내용 볼 수 있도록 수정
 					Text.setLineWrap(true);
 				    Text.setWrapStyleWord(true);
 					Text.setText(jsoupTest.classifySite(url));
-					//jsoupTest.crawling(url);					
+					rc = jsoupTest.crawling(url);
 				}
 			});
 		}
 	}
+	
+	
 	
     public static void main(String[] args) {
 		new Gui();

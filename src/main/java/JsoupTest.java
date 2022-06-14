@@ -74,10 +74,10 @@ public class JsoupTest {
         //본문내용이 정상적으로 가져왔을시
         if(text!="error"){
             // 결과 확인용 출력 구문
-            for(ResponseCrawling responseCrawling : tf.transfer(text)) {
-                System.out.print(responseCrawling.getResultWord());
-                System.out.println(" / " + responseCrawling.getStressIndex());
-            }
+            //for(ResponseCrawling responseCrawling : tf.transfer(text)) {
+                //System.out.print(responseCrawling.getResultWord());
+                //System.out.println(" / " + responseCrawling.getStressIndex());
+            //}
             return tf.transfer(text);
         }
         //url이 잘못되거나 본문 내용 읽을때 오류 발생. 빈 리스트 리턴
