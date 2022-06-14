@@ -7,128 +7,130 @@ import java.io.IOException;
 import java.text.AttributedString;
 
 public class Gui extends JFrame {
-    JsoupTest jsoupTest = new JsoupTest();
-    JTextField link = new JTextField(30);
-    JTextArea Text = new JTextArea(25, 40);
 
-    JScrollPane scrollText = new JScrollPane(Text);
-    JButton readButton = new JButton("Read");
-    String url = "";
+	JsoupTest jsoupTest = new JsoupTest();
+	JTextField link = new JTextField(30);
+	JTextArea Text = new JTextArea(25,40);
 
-    ResponseCrawling rc = new ResponseCrawling();
+	JScrollPane scrollText = new JScrollPane(Text);
+	JButton readButton = new JButton("Read");
+	String url = "";
 
-    public Gui() {
-        setTitle("Bionic reader");
+	ResponseCrawling rc = new ResponseCrawling();
+	static int cnt = 0;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Container contentPane = getContentPane();
-        contentPane.setLayout(null);
+	public Gui() {
+		setTitle("Bionic reader");
 
-        NorthPanel NP = new NorthPanel();
-        NP.setSize(500, 200);
-        NP.setLocation(0, 0);
-        contentPane.add(NP);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container contentPane = getContentPane();
+		contentPane.setLayout(null);
 
         SouthPanel SP = new SouthPanel();
-        SP.setSize(500, 500);
-        SP.setLocation(0, 200);
+        SP.setSize(500,500);
+        SP.setLocation(0,200);
         contentPane.add(SP);
 
-        setSize(500, 700);
-        setVisible(true);
-        setResizable(false);
-    }
+		NorthPanel NP = new NorthPanel();
+		NP.setSize(500,200);
+		NP.setLocation(0,0);
+		contentPane.add(NP);
 
-    //바이오닉리딩 결과 띄워주는 패널
-    class NorthPanel extends JPanel {
-        //버튼 눌리면 패널 업데이트
-        public NorthPanel() {
-            readButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    revalidate();
-                    repaint();
-                }
-            });
-        }
+		setSize(500,700);
+		setVisible(true);
+		setResizable(false);
+	}
 
-        public void paintComponent(Graphics g) {
+	//바이오닉리딩 결과 띄워주는 패널
+	class NorthPanel extends JPanel {
 
-            //고정위치를 나타내는 부분 삭제(상하 줄만 제외 제거함)
-            super.paintComponent(g);
-            g.drawLine(10, 60, 490, 60);
-            //g.drawLine(200,60,200,70);
-            //g.drawLine(200,160,200,170);
-            g.drawLine(10, 170, 490, 170);
+		//버튼 눌리면 패널 업데이트
+		public NorthPanel() {
 
-            //리스트가 비었을 경우(Bionic reading 된 결과가 없을 경우)
-            if (rc.getResponseWords().isEmpty()) return;
+			readButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
 
-            Font MalgunGothic = new Font("맑은 고딕", Font.PLAIN, 30);
+					//pointComponent() 자체를 여러번 업데이트
+					for(cnt = 0; cnt < rc.getResponseWords().size(); cnt++) {
 
-            //g.setFont();
-            //g.drawString(str,100,125);
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException ie) {
+							ie.printStackTrace();
+						}
+						revalidate();
+						update(getGraphics());
 
-            //지정 인덱스의 character만 강조하여 출력
-            for (ResponseWord responseWord : rc.getResponseWords()) {
+					}
+				}
+			});
+		}
+		
+		public void paintComponent(Graphics g) {
+			
+			//고정위치를 나타내는 부분 삭제(상하 줄만 제외 제거함) 
+			super.paintComponent(g);
+			g.drawLine(10,60,490,60); 
+			//g.drawLine(200,60,200,70); 
+			//g.drawLine(200,160,200,170); 
+			g.drawLine(10,170,490,170);
+			
+			//리스트가 비었을 경우(Bionic reading 된 결과가 없을 경우)
+			if(rc.getResponseWords().isEmpty()) return;
+			
+			Font MalgunGothic = new Font("맑은 고딕",Font.PLAIN,30);
+			
+			//g.setFont();			
+			//g.drawString(str,100,125);
+			
+			//지정 인덱스의 character만 강조하여 출력
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			
+			String str = new String(rc.getResponseWords().get(cnt).getResultWord());
+			int index = rc.getResponseWords().get(cnt).getStressIndex();
+			
+			AttributedString as = new AttributedString(str);
+			as.addAttribute(TextAttribute.FONT, MalgunGothic);
+			as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index+1);
+			
+			g2.drawString(as.getIterator(), 100, 125);
+		}			
+	}
 
-                try {
-                    Thread.sleep(100);
-                    Graphics2D g2 = (Graphics2D) g;
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                    String str = new String(responseWord.getResultWord());
-                    int index = responseWord.getStressIndex();
-
-                    AttributedString as = new AttributedString(str);
-                    as.addAttribute(TextAttribute.FONT, MalgunGothic);
-                    as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index + 1);
-
-                    g2.drawString(as.getIterator(), 100, 125);
-                    //this.setVisible(true);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                //revalidate();
-            }
-        }
-    }
-
-    //링크 받아오기, 기사 전체 출력 패널
-    class SouthPanel extends JPanel {
-
-        public SouthPanel() {
-
-            add(scrollText);
-            add(new JLabel("Link"));
-            add(link);
-            add(readButton);
-
-            //링크 사용자에게 입력받도록 함
-            readButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    url = link.getText();
-                    //JTextArea에서 기사 내용 볼 수 있도록 수정
-                    Text.setLineWrap(true);
-                    Text.setWrapStyleWord(true);
-                    try {
-                        Text.setText(jsoupTest.searchRawText(url));
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    try {
-                        rc = jsoupTest.crawling(url);
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
+	//링크 받아오기, 기사 전체 출력 패널
+	class SouthPanel extends JPanel {
+		
+		public SouthPanel() {
+			
+			add(scrollText);
+			add(new JLabel("Link"));
+			add(link);
+			add(readButton);
+			
+			//링크 사용자에게 입력받도록 함
+			readButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					url = link.getText();
+					//JTextArea에서 기사 내용 볼 수 있도록 수정
+					Text.setLineWrap(true);
+				    Text.setWrapStyleWord(true);
+					try {
+						Text.setText(jsoupTest.searchRawText(url));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					try {
+						rc = jsoupTest.crawling(url);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+		}
+	}
     public static void main(String[] args) {
         new Gui();
     }
