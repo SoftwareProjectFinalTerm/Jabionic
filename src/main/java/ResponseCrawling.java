@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseCrawling {
     String rawText;
-    List<ResponseWord> responseWords;
+    private List<ResponseWord> responseWords = new ArrayList<>();
 
     public String getRawText() {
         return rawText;
