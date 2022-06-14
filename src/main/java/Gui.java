@@ -19,6 +19,7 @@ public class Gui extends JFrame {
 	String url = "";
 	
 	ResponseCrawling rc = new ResponseCrawling();
+	static int cnt = 0;
 
 	public Gui() {
 		setTitle("Bionic reader");
@@ -52,8 +53,18 @@ public class Gui extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					revalidate();
-					repaint();
+					//pointComponent() 자체를 여러번 업데이트
+					for(cnt = 0; cnt < rc.getResponseWords().size(); cnt++) {
+						
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException ie) {
+							ie.printStackTrace();
+						}
+						revalidate();
+						update(getGraphics());
+						
+					}
 				}
 			});
 		}
@@ -76,29 +87,17 @@ public class Gui extends JFrame {
 			//g.drawString(str,100,125);
 			
 			//지정 인덱스의 character만 강조하여 출력
-			for(ResponseWord responseWord : rc.getResponseWords()) {
-				
-				try {
-					Thread.sleep(100);
-					Graphics2D g2 = (Graphics2D) g;
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					
-					String str = new String(responseWord.getResultWord());
-					int index = responseWord.getStressIndex();
-					
-					AttributedString as = new AttributedString(str);
-					as.addAttribute(TextAttribute.FONT, MalgunGothic);
-					as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index+1);
-					
-					g2.drawString(as.getIterator(), 100, 125);
-					//this.setVisible(true);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				//revalidate();
-			}
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			
+			String str = new String(rc.getResponseWords().get(cnt).getResultWord());
+			int index = rc.getResponseWords().get(cnt).getStressIndex();
+			
+			AttributedString as = new AttributedString(str);
+			as.addAttribute(TextAttribute.FONT, MalgunGothic);
+			as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index+1);
+			
+			g2.drawString(as.getIterator(), 100, 125);
 		}			
 	}
 

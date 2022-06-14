@@ -39,10 +39,10 @@ public class JsoupTest {
         text = searchRawText(url); //본문 내용 가져옴
 
         // 결과 확인용 출력 구문
-        for(ResponseWord responseWord : tf.transfer(text).getResponseWords()) {
-            System.out.print(responseWord.getResultWord());
-            System.out.println(" / " + responseWord.getStressIndex());
-        }
+//        for(ResponseWord responseWord : tf.transfer(text).getResponseWords()) {
+//            System.out.print(responseWord.getResultWord());
+//            System.out.println(" / " + responseWord.getStressIndex());
+//        }
 
         return tf.transfer(text);
     }
