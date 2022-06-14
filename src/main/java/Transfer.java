@@ -18,7 +18,7 @@ public class Transfer {
         words = getDeletedSpaceStr(text).trim().split(" ");     // 띄어쓰기를 기준으로 단어 구분
 
         for (String word : words) {
-            if(word.equals("")) {                  // 공백은 제거
+            if (word.equals("")) {                  // 공백은 제거
                 continue;
             }
             char[] charArray = word.trim().toCharArray();
@@ -33,13 +33,14 @@ public class Transfer {
 
     /**
      * 문자열에서 '(,)'를 포함하여 그 사이에 있는 내용을 삭제
+     *
      * @param text 문자열
      * @return () 삭제 된 문자열
      */
     private String getDeletedSpaceStr(String text) {
         int start, end, length = 0;
 
-        while(text.contains("(")) {
+        while (text.contains("(")) {
             start = text.indexOf('(');
             end = text.indexOf(')');
             length = text.length();
@@ -55,15 +56,16 @@ public class Transfer {
      * 2글자 이하면 앞글자
      * 5글자 이상이면 3번째 글자
      * 그 외는 가운데, ex) 바'나'나, 워터'멜'론
+     *
      * @param word 문자배열로 이루어진 단어
      * @return 강조할 음절의 index
      */
     private int getIndexOfStress(char[] word) {
         int length = word.length;
 
-        if(length <= 2) {
+        if (length <= 2) {
             return 0;
-        } else if(length > 4) {
+        } else if (length > 4) {
             return 2;
         }
         return length / 2;

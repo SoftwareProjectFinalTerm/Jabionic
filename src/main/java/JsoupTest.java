@@ -34,15 +34,7 @@ public class JsoupTest {
 
     public ResponseCrawling crawling(String url) throws IOException {
         Transfer tf = new Transfer();
-        String text = "";
-
-        text = searchRawText(url); //본문 내용 가져옴
-
-        // 결과 확인용 출력 구문
-        for(ResponseWord responseWord : tf.transfer(text).getResponseWords()) {
-            System.out.print(responseWord.getResultWord());
-            System.out.println(" / " + responseWord.getStressIndex());
-        }
+        String text = searchRawText(url); //본문 내용 가져옴
 
         return tf.transfer(text);
     }
