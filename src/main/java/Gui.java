@@ -88,6 +88,7 @@ public class Gui extends JFrame {
 			if(rc.getResponseWords().isEmpty()) return;
 			
 			Font MalgunGothic = new Font("맑은 고딕",Font.PLAIN,30);
+			Font MalgunGothicBold = new Font("맑은 고딕",Font.BOLD,30);
 			
 			//g.setFont();			
 			//g.drawString(str,100,125);
@@ -101,7 +102,7 @@ public class Gui extends JFrame {
 			
 			AttributedString as = new AttributedString(str);
 			as.addAttribute(TextAttribute.FONT, MalgunGothic);
-			as.addAttribute(TextAttribute.FOREGROUND, Color.red, index, index+1);
+			as.addAttribute(TextAttribute.FONT, MalgunGothicBold, 0, index+1);
 			
 			g2.drawString(as.getIterator(), 100, 125);
 		}			
