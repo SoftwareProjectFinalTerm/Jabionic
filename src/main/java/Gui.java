@@ -13,6 +13,7 @@ public class Gui extends JFrame {
 	JTextArea Text = new JTextArea(25,40);
 
 	JScrollPane scrollText = new JScrollPane(Text);
+	JButton readUrlButton = new JButton("Read URL");
 	JButton readButton = new JButton("Read");
 	String url = "";
 
@@ -26,15 +27,15 @@ public class Gui extends JFrame {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(null);
 
-        SouthPanel SP = new SouthPanel();
-        SP.setSize(500,500);
-        SP.setLocation(0,200);
-        contentPane.add(SP);
-
 		NorthPanel NP = new NorthPanel();
 		NP.setSize(500,200);
 		NP.setLocation(0,0);
 		contentPane.add(NP);
+		
+        SouthPanel SP = new SouthPanel();
+        SP.setSize(500,500);
+        SP.setLocation(0,200);
+        contentPane.add(SP);
 
 		setSize(500,700);
 		setVisible(true);
@@ -51,7 +52,7 @@ public class Gui extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					//pointComponent() 자체를 여러번 업데이트
+					//paintComponent() 자체를 여러번 업데이트
 					for(cnt = 0; cnt < rc.getResponseWords().size(); cnt++) {
 
 						try {
@@ -105,12 +106,12 @@ public class Gui extends JFrame {
 		public SouthPanel() {
 			
 			add(scrollText);
-			add(new JLabel("Link"));
-			add(link);
 			add(readButton);
+			add(link);
+			add(readUrlButton);
 			
 			//링크 사용자에게 입력받도록 함
-			readButton.addActionListener(new ActionListener() {
+			readUrlButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					url = link.getText();
