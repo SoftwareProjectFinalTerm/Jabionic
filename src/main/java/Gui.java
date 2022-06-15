@@ -51,8 +51,15 @@ public class Gui extends JFrame {
 			readButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
+					//TextArea에 있는 내용을 BionicReading
+					try {
+						rc = jsoupTest.BionicReading(Text.getText());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 
-					//paintComponent() 자체를 여러번 업데이트
+					//결과를 출력하기 위해 paintComponent()를 업데이트
 					for(cnt = 0; cnt < rc.getResponseWords().size(); cnt++) {
 
 						try {
@@ -119,12 +126,7 @@ public class Gui extends JFrame {
 					Text.setLineWrap(true);
 				    Text.setWrapStyleWord(true);
 					try {
-						Text.setText(jsoupTest.searchRawText(url));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					try {
-						rc = jsoupTest.crawling(url);
+						Text.setText(jsoupTest.crawling(url));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

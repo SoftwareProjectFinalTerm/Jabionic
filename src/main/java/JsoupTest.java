@@ -15,7 +15,7 @@ public class JsoupTest {
      */
     //url을 입력받고 네이버뉴스,다음뉴스냐에 따라서 다른 태그로 크롤링함. 본문 내용 String으로 리턴
     //예외 상황 발생시 "error"를 리턴
-    String searchRawText(String url) throws IOException {
+    String crawling(String url) throws IOException {
         String text = "";
         Elements contents = new Elements();
 
@@ -32,9 +32,8 @@ public class JsoupTest {
         return text;
     }
 
-    public ResponseCrawling crawling(String url) throws IOException {
+    public ResponseCrawling BionicReading(String text) throws IOException {
         Transfer tf = new Transfer();
-        String text = searchRawText(url); //본문 내용 가져옴
 
         return tf.transfer(text);
     }
